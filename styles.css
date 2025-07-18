@@ -1,0 +1,132 @@
+body{
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    margin: 0px;
+    gap: 20px;
+    background-color: black;
+    color: white;
+}
+
+.bookContainer{
+    display: flex;
+    flex-direction: row;
+    padding: 10px 30px;
+    background-color: black;
+    gap: 30px 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.bookContainer h1{
+    color: aquamarine;
+    font-size: 2rem;
+}
+.bookContainer p{
+    color: white;
+    font-size: 1.3rem;
+}
+
+
+
+/* INDIVIDUAL BOOK CONTAINER */
+
+.Container{
+    border: white 3px solid;
+    padding: 20px;
+    width: 40%;
+    height: 300px;
+}
+
+.removeBtn{
+    background-color: black;
+    color: aqua;
+    font-size: 2rem;
+    outline: none;
+    border: none;
+    float: right;
+}
+
+.readContainer{
+    display: flex;
+    gap: 0px 10px;
+}
+.readBtn{
+    background-color: black;
+    color: aqua;
+    font-size: 1.3rem;
+    outline: none;
+    border: none;
+    font-weight: 600;
+} 
+
+
+/* ADDING BUTTONS BOOKS STYLES */
+
+.addBooksBtn{
+    background-color: black;
+    color: aqua;
+    width: 25%;
+    font-size: 3rem;
+    align-self: center;
+    outline: none;
+    border: 3px white dotted;
+    border-radius: 30px;
+    padding: 20px;
+    margin-top: 5%;
+}
+
+
+/* FORM */
+
+.formContainer{
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.inputContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0px 5px;
+}
+#bookForm{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+input{
+    border-radius: 0px 30px 30px 0px;
+    outline: none;
+    border: 3px solid rgb(0, 119, 119);
+    background-color: black;
+    color: white;
+    padding: 5px;
+}
+
+input:invalid{
+    background-color: aliceblue;    
+}
+#submitBtn{
+    background-color: black;
+    color: aqua;
+    font-size: 1rem;
+    outline: none;
+    border: 3px white solid;
+    border-radius: 30px;
+    padding: 20px;
+}
+
+input[type="checkbox"]{
+    appearance: none;
+    padding: 10px;
+    border-radius: 0px;
+}
+
+input[type="checkbox"]:checked {
+    background-color: aqua;
+    border-color: aqua;
+}
