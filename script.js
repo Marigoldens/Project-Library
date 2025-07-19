@@ -31,19 +31,20 @@ const submitBtn = document.querySelector('#submitBtn')
 // LOGIC
 const myLibrary = [];
 
-function Book(title, author, pageNum, releaseDate, read) {
-    this.title = title;
-    this.author = author;
-    this.pageNum = pageNum;
-    this.releaseDate = releaseDate;
-    this.read = read;
-    this.ID = crypto.randomUUID();
-}
+class Book{
+    constructor(title, author, pageNum, releaseDate, read){
+        this.title = title;
+        this.author = author;
+        this.pageNum = pageNum;
+        this.releaseDate = releaseDate;
+        this.read = read;
+        this.ID = crypto.randomUUID();
+    }
 
-Book.prototype.toggleRead = function() {
-    this.read = !this.read
-}
+    toggleRead() {this.read = !this.read}
 
+
+}
 
 function addBookToLibrary(title, author, pageNum, releaseDate, read) {
     const book = new Book(title, author, pageNum, releaseDate, read);
