@@ -1,39 +1,44 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>LIBRARY</title>
-        <link rel="stylesheet" href="styles.css">
-        <script src="script.js" defer></script>
-    </head>
-    <body>
-        <button class="addBooksBtn">Add book</button>
-        <div class="formContainer" style="display: none;">
-            <form action="#" id="bookForm">
-                <div class="inputContainer">
-                    <label for="bookTitle">BOOK TITLE</label>
-                    <input type="text" id="bookTitle" name="user_book_title" required>
-                </div>
-                <div class="inputContainer">
-                    <label for="author">BOOK AUTHOR</label>
-                    <input type="text" id="author" name="book_author" required>
-                </div>
-                <div class="inputContainer">
-                    <label for="pageNum">PAGE NUMBER</label>
-                    <input type="number" id="pageNum" name="book_pageNum" required>
-                </div>
-                <div class="inputContainer">
-                    <label for="releaseDate">RELEASE DATE</label>
-                    <input type="number" id="releaseDate" name="book_releaseDate" required>
-                </div>
-                <div class="inputContainer">
-                    <label for="read">READ</label>
-                    <input type="checkbox" id="read" name="book_read" required>
-                </div>
-                <button id="submitBtn" type="submit">SUBMIT</button>
-            </form>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LIBRARY</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <button class="addBooksBtn">Add book</button>
+    <div class="formContainer" style="display: none">
+      <form action="#" id="bookForm">
+        <div class="inputContainer">
+          <label for="bookTitle">BOOK TITLE</label>
+          <input type="text" id="bookTitle" name="user_book_title" required />
         </div>
-        <div class="bookContainer"></div>
-    </body>
-    </html>
+        <div class="inputContainer">
+          <label for="author">BOOK AUTHOR</label>
+          <input type="text" id="author" name="book_author" required />
+        </div>
+        <div class="inputContainer">
+          <label for="pageNum">PAGE NUMBER</label>
+          <input type="number" id="pageNum" name="book_pageNum" required />
+        </div>
+        <div class="inputContainer">
+          <label for="releaseDate">RELEASE DATE</label>
+          <input
+            type="number"
+            id="releaseDate"
+            name="book_releaseDate"
+            required
+          />
+        </div>
+        <div class="inputContainer">
+          <label for="read">READ</label>
+          <input type="checkbox" id="read" name="book_read" required />
+        </div>
+        <button id="submitBtn" type="submit">SUBMIT</button>
+      </form>
+    </div>
+    <div class="bookContainer"></div>
+  </body>
+</html>
