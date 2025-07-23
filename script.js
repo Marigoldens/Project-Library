@@ -1,48 +1,22 @@
 "use strict";
 
-// DOM MANIPULATION
+// --- DOM Elements ---
+// Select all necessary DOM elements once at the beginning
 const formContainer = document.querySelector(".formContainer");
 const addBooksBtn = document.querySelector(".addBooksBtn");
+const submitBtn = document.querySelector("#submitBtn"); // Still useful for initial setup, though form.submit handles main logic
+const bookForm = document.querySelector("#bookForm");
+const bookTitleInput = document.querySelector("#bookTitle");
+const authorInput = document.querySelector("#author");
+const pageNumInput = document.querySelector("#pageNum");
+const releaseDateInput = document.querySelector("#releaseDate");
+const readInput = document.querySelector("#read");
+const bookDisplayContainer = document.querySelector(".bookContainer");
 
-addBooksBtn.addEventListener("click", () => {
-  if (formContainer.style.display === "none") {
-    formContainer.style.display = "flex";
-  } else {
-    formContainer.style.display = "none";
-  }
-});
+// --- Library Logic ---
+const myLibrary = []; // Array to store all book objects
 
-const submitBtn = document.querySelector("#submitBtn");
-submitBtn.addEventListener("click", (event) => {
-  event.preventDefault();
-  const bookTitle = document.querySelector("#bookTitle").value;
-  const author = document.querySelector("#author").value;
-  const pageNum = document.querySelector("#pageNum").value;
-  const releaseDate = document.querySelector("#releaseDate").value;
-  const read = document.querySelector("#read").checked;
-  const bookForm = document.querySelector("#bookForm");
-  if (
-    bookTitle === "" ||
-    author === "" ||
-    pageNum === "" ||
-    releaseDate === ""
-  ) {
-    return;
-  }
-  const newBook = addBookToLibrary(
-    bookTitle,
-    author,
-    pageNum,
-    releaseDate,
-    read
-  );
-  bookForm.reset();
-  addBookToDOM(bookTitle, author, pageNum, releaseDate, read, newBook.ID);
-});
-
-// LOGIC
-const myLibrary = [];
-
+// Book Class definition
 class Book {
   constructor(title, author, pageNum, releaseDate, read) {
     this.title = title;
@@ -50,117 +24,188 @@ class Book {
     this.pageNum = pageNum;
     this.releaseDate = releaseDate;
     this.read = read;
-    this.ID = crypto.randomUUID();
+    this.ID = crypto.randomUUID(); // Assign a unique ID using Web Crypto API
   }
 
+  // Method to toggle the read status of the book
   toggleRead() {
     this.read = !this.read;
   }
 }
 
+// Function to add a new book to the myLibrary array
 function addBookToLibrary(title, author, pageNum, releaseDate, read) {
   const book = new Book(title, author, pageNum, releaseDate, read);
   myLibrary.push(book);
-  return book;
+  return book; // Return the newly created book object
 }
 
-function addBookToDOM(title, author, pageNum, releaseDate, read, bookId) {
-  // FOR ADDING CARD TO THE PAGE
-  const readOrNot = read ? "READ" : "NOT READ YET";
-  const bookContainer = document.querySelector(`.bookContainer`);
-  // FOR MAKING THE CARD
-  const Container = document.createElement("div");
-  Container.setAttribute("class", "Container");
-  Container.setAttribute("data-book-id", bookId);
+// --- DOM Manipulation Functions ---
 
-  // FOR REMOVING THE CARD
+// Function to add a book's card to the display in the DOM
+function addBookToDOM(book) {
+  // Determine initial read status text
+  const readOrNotText = book.read ? "READ" : "NOT READ YET";
+
+  // Create the main card container (div)
+  const bookCard = document.createElement("div");
+  bookCard.setAttribute("class", "Container"); // Matches your CSS class
+  bookCard.setAttribute("data-book-id", book.ID); // Link card to book ID
+
+  // Create and append the remove button
   const removeBtn = document.createElement("button");
   removeBtn.setAttribute("class", "removeBtn");
-  Container.appendChild(removeBtn);
   removeBtn.textContent = "X";
   removeBtn.addEventListener("click", () => {
-    const bookIdToRemove = Container.getAttribute("data-book-id");
-    // Step 2: Find the correct book in the array
-    const bookIndex = myLibrary.findIndex((book) => book.ID === bookIdToRemove);
+    // Remove the book from the myLibrary array
+    const bookIndex = myLibrary.findIndex((item) => item.ID === book.ID);
     if (bookIndex !== -1) {
-      myLibrary.splice(bookIndex, 1); // Step 3: Remove the book from the array (if found)
+      myLibrary.splice(bookIndex, 1);
     }
-    bookContainer.removeChild(Container);
+    // Remove the book card from the DOM
+    bookDisplayContainer.removeChild(bookCard);
   });
+  bookCard.appendChild(removeBtn);
 
-  // CARD INFO PLACEMENT
-  bookContainer.setAttribute("class", "bookContainer");
-  const titleContainer = document.createElement(`h1`);
-  titleContainer.textContent = title;
-  Container.appendChild(titleContainer);
-  const authorContainer = document.createElement(`p`);
-  authorContainer.textContent = `AUTHOR: ${author}`;
-  Container.appendChild(authorContainer);
-  const pageNumContainer = document.createElement(`p`);
-  pageNumContainer.textContent = `NUMBER OF PAGES: ${pageNum}`;
-  Container.appendChild(pageNumContainer);
-  const releaseDateContainer = document.createElement(`p`);
-  releaseDateContainer.textContent = `RELEASE YEAR: ${releaseDate}`;
-  Container.appendChild(releaseDateContainer);
-  // READ BTN
-  const readContainer = document.createElement(`div`);
+  // Create and append card info elements
+  const titleContainer = document.createElement("h1");
+  titleContainer.textContent = book.title;
+  bookCard.appendChild(titleContainer);
+
+  const authorContainer = document.createElement("p");
+  authorContainer.textContent = `AUTHOR: ${book.author}`;
+  bookCard.appendChild(authorContainer);
+
+  const pageNumContainer = document.createElement("p");
+  pageNumContainer.textContent = `NUMBER OF PAGES: ${book.pageNum}`;
+  bookCard.appendChild(pageNumContainer);
+
+  const releaseDateContainer = document.createElement("p");
+  releaseDateContainer.textContent = `RELEASE YEAR: ${book.releaseDate}`;
+  bookCard.appendChild(releaseDateContainer);
+
+  // Create and append read status section (button + text)
+  const readContainer = document.createElement("div");
   readContainer.setAttribute("class", "readContainer");
+
   const readBtn = document.createElement("button");
   readBtn.setAttribute("class", "readBtn");
   readBtn.textContent = "STATUS";
 
-  //TOGGLE READ
-  readBtn.addEventListener("click", () => {
-    const bookToToggle = Container.getAttribute("data-book-id");
-    const bookIndex = myLibrary.findIndex((book) => book.ID === bookToToggle);
-    myLibrary[bookIndex].toggleRead();
-    if (readStatus.textContent === "READ") {
-      readStatus.textContent = "UNREAD";
-    } else {
-      readStatus.textContent = "READ";
-    }
-  });
   const readStatus = document.createElement("p");
-  readStatus.textContent = readOrNot;
+  readStatus.textContent = readOrNotText; // Set initial text
+
+  // Event listener to toggle read status when the button is clicked
+  readBtn.addEventListener("click", () => {
+    book.toggleRead(); // Toggle the read status in the actual book object
+    readStatus.textContent = book.read ? "READ" : "NOT READ YET"; // Update the displayed text
+  });
+
   readContainer.appendChild(readBtn);
   readContainer.appendChild(readStatus);
-  // APPENDING TO CONTAINER
-  Container.appendChild(readContainer);
-  bookContainer.appendChild(Container);
+  bookCard.appendChild(readContainer);
+
+  // Append the complete book card to the main display container
+  bookDisplayContainer.appendChild(bookCard);
 }
 
-// Test functions
-// Update to:
-const book1 = addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 310, 1937, true);
-const book2 = addBookToLibrary(
-  "Harry Potter and the Sorcerer's Stone",
-  "J.K. Rowling",
-  309,
-  1997,
-  true
-);
-const book3 = addBookToLibrary(
-  "The Name of the Wind",
-  "Patrick Rothfuss",
-  662,
-  2007,
-  false
-);
+// --- Event Listeners ---
 
-addBookToDOM("The Hobbit", "J.R.R. Tolkien", 310, 1937, true, book1.ID);
-addBookToDOM(
-  "Harry Potter and the Sorcerer's Stone",
-  "J.K. Rowling",
-  309,
-  1997,
-  true,
-  book2.ID
-);
-addBookToDOM(
-  "The Name of the Wind",
-  "Patrick Rothfuss",
-  662,
-  2007,
-  false,
-  book3.ID
-);
+// Event listener for the "Add book" button to toggle form visibility
+addBooksBtn.addEventListener("click", () => {
+  formContainer.style.display =
+    formContainer.style.display === "none" ? "flex" : "none";
+});
+
+// Event listener for the form submission, including validation
+bookForm.addEventListener("submit", (event) => {
+  // Prevent the default form submission behavior (page reload)
+  event.preventDefault();
+
+  let hasErrors = false; // Flag to track if any validation errors occur
+
+  // --- Input Validation Logic ---
+
+  // Validate book title
+  if (bookTitleInput.value.trim() === "") {
+    bookTitleInput.setCustomValidity("Please enter a valid book title.");
+    bookTitleInput.reportValidity();
+    hasErrors = true;
+  } else if (bookTitleInput.value.length < 3) {
+    bookTitleInput.setCustomValidity(
+      "Book title must be at least 3 characters."
+    );
+    bookTitleInput.reportValidity();
+    hasErrors = true;
+  } else {
+    bookTitleInput.setCustomValidity(""); // Clear custom validity if valid
+  }
+
+  // Validate author
+  if (authorInput.value.trim() === "") {
+    authorInput.setCustomValidity("Please enter an author name.");
+    authorInput.reportValidity();
+    hasErrors = true;
+  } else if (authorInput.value.length < 3) {
+    authorInput.setCustomValidity("Author name must be at least 3 characters.");
+    authorInput.reportValidity();
+    hasErrors = true;
+  } else {
+    authorInput.setCustomValidity("");
+  }
+
+  // Validate page number
+  if (pageNumInput.value.trim() === "") {
+    pageNumInput.setCustomValidity("Please enter the number of pages.");
+    pageNumInput.reportValidity();
+    hasErrors = true;
+  } else if (parseInt(pageNumInput.value, 10) <= 0) {
+    pageNumInput.setCustomValidity("Page number must be a positive number.");
+    pageNumInput.reportValidity();
+    hasErrors = true;
+  } else {
+    pageNumInput.setCustomValidity("");
+  }
+
+  // Validate release date (year)
+  const currentYear = new Date().getFullYear(); // Get the current year dynamically
+  if (releaseDateInput.value.trim() === "") {
+    releaseDateInput.setCustomValidity("Please enter the release year.");
+    releaseDateInput.reportValidity();
+    hasErrors = true;
+  } else {
+    const releaseYear = parseInt(releaseDateInput.value, 10); // Convert input value to an integer
+
+    if (isNaN(releaseYear)) {
+      // Check if the parsed value is not a number
+      releaseDateInput.setCustomValidity(
+        "Please enter a valid number for the release year."
+      );
+      releaseDateInput.reportValidity();
+      hasErrors = true;
+    } else if (releaseYear < 1000 || releaseYear > currentYear) {
+      // Check if year is within a valid range
+      releaseDateInput.setCustomValidity(
+        `Please enter a valid year between 1000 and ${currentYear}.`
+      );
+      releaseDateInput.reportValidity();
+      hasErrors = true;
+    } else {
+      releaseDateInput.setCustomValidity("");
+    }
+  }
+
+  // If no validation errors occurred, proceed to add the book
+  if (!hasErrors) {
+    const newBook = addBookToLibrary(
+      bookTitleInput.value,
+      authorInput.value,
+      pageNumInput.value,
+      releaseDateInput.value, // Keep as string for display; convert to number if needed for other ops
+      readInput.checked
+    );
+    addBookToDOM(newBook); // Add the new book's card to the DOM
+    bookForm.reset(); // Clear all form fields
+    formContainer.style.display = "none"; // Hide the form after successful submission
+  }
+});

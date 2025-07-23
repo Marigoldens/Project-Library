@@ -10,31 +10,52 @@
   <body>
     <button class="addBooksBtn">Add book</button>
     <div class="formContainer" style="display: none">
-      <form action="#" id="bookForm">
+      <form action="#" id="bookForm" autocomplete="off">
         <div class="inputContainer">
           <label for="bookTitle">BOOK TITLE</label>
-          <input type="text" id="bookTitle" name="user_book_title" required />
+          <input
+            type="text"
+            id="bookTitle"
+            name="user_book_title"
+            minlength="3"
+            required
+          />
         </div>
         <div class="inputContainer">
           <label for="author">BOOK AUTHOR</label>
-          <input type="text" id="author" name="book_author" required />
+          <input
+            type="text"
+            id="author"
+            name="book_author"
+            minlength="3"
+            required
+          />
         </div>
         <div class="inputContainer">
           <label for="pageNum">PAGE NUMBER</label>
-          <input type="number" id="pageNum" name="book_pageNum" required />
+          <input
+            type="number"
+            id="pageNum"
+            name="book_pageNum"
+            required
+            min="1"
+          />
         </div>
         <div class="inputContainer">
-          <label for="releaseDate">RELEASE DATE</label>
+          <label for="releaseDate">RELEASE YEAR</label>
           <input
             type="number"
             id="releaseDate"
             name="book_releaseDate"
             required
+            min="1000"
+            max="2100"
+            placeholder="e.g., 1984"
           />
         </div>
         <div class="inputContainer">
           <label for="read">READ</label>
-          <input type="checkbox" id="read" name="book_read" required />
+          <input type="checkbox" id="read" name="book_read" />
         </div>
         <button id="submitBtn" type="submit">SUBMIT</button>
       </form>

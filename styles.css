@@ -104,7 +104,8 @@ input {
 }
 
 input:invalid {
-  background-color: aliceblue;
+  background-color: hsl(0, 100%, 76%);
+  border: 2px solid red;
 }
 #submitBtn {
   background-color: black;
@@ -114,6 +115,10 @@ input:invalid {
   border: 3px white solid;
   border-radius: 30px;
   padding: 20px;
+}
+
+#submitBtn:hover {
+  background-color: hsl(0, 0%, 20%);
 }
 
 input[type="checkbox"] {
